@@ -2,22 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMoveScript : MonoBehaviour
 {
     public GameObject player;
+    public GameObject enemy;
     public float moveStrength;
     public float jumpStrength;
     public float move_jump_Strength;
-    public float speed;
-    public bool onGround = true;
+    //public float speed;
+    bool onGround = true;
     public Sprite jumpSprite;
     public Sprite moveSprite;
     public Sprite deadSprite;
-    public float ceiling = 50;
-    public float floor = -100;
-    public GameObject canvas;
-    public bool alive = true;
+    float ceiling = 50;
+    float floor = -100;
+    public GameObject gameOverScreen;
+    bool alive = true;
+    public GameObject heart;
+    public Sprite empty_heart;
+    int c = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +69,15 @@ public class PlayerMoveScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            alive = false;
+            c++;
+            heart = GameObject.FindGameObjectWithTag(c.ToString());
+            heart.GetComponent<Image>().sprite = empty_heart;
+            if (c == 3)
+                alive = false;
+            /*player.transform.position = new Vector3(0f, -1.125f, 0f);
+            player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+            enemy.transform.position = new Vector3(15f, -1.45f, 0f);
+            enemy.GetComponent<Rigidbody2D>().velocity = Vector3.zero;*/
         }
         else if(collision.gameObject.tag == "Platform")
         {
@@ -84,14 +97,17 @@ public class PlayerMoveScript : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if(collision.gameObject.tag == "Platform")
+        {
         onGround = false;
         player.GetComponent<SpriteRenderer>().sprite = jumpSprite;
+        }
     }
 
     public void GameOver()
     {
         player.GetComponent<SpriteRenderer>().sprite = deadSprite;
-        canvas.SetActive(true);
+        gameOverScreen.SetActive(true);
     }
     public void restart()
     {

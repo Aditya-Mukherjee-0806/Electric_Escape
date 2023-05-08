@@ -12,6 +12,7 @@ public class EnemyScript : MonoBehaviour
     bool movingLeft = true;
     bool oldMovingDirection = true;
     bool alive = true;
+    int c = 0;
     //public bool isPlayerGrounded;
     // Start is called before the first frame update
     void Start()
@@ -77,6 +78,11 @@ public class EnemyScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Player")
-            alive = false;
+        {
+            c++;
+            if (c == 3)
+                alive = false;
+        }
+            
     }
 }
