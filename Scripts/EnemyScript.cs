@@ -11,7 +11,7 @@ public class EnemyScript : MonoBehaviour
     public float enemyMoveStrength;
     public float within_range;
     float oldPos;
-    bool movingLeft = true;
+    bool isMovingLeft = true;
     bool oldMovingDirection = true;
     bool isPlayerAlive = true;
     int numberOfEmptyHearts = 0;
@@ -60,16 +60,16 @@ public class EnemyScript : MonoBehaviour
         }
 
         if (enemy.transform.position.x > oldPos)
-            movingLeft = false;
+            isMovingLeft = false;
         else
-            movingLeft = true;
+            isMovingLeft = true;
 
-        if(movingLeft && movingLeft != oldMovingDirection)
+        if(isMovingLeft && isMovingLeft != oldMovingDirection)
         {
             enemy.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             Debug.Log("Flip");
         }
-        else if(!movingLeft && movingLeft != oldMovingDirection)
+        else if(!isMovingLeft && isMovingLeft != oldMovingDirection)
         {
             enemy.transform.localScale = new Vector3(-0.1f, 0.1f, 0.1f);
             Debug.Log("Flip");
@@ -79,7 +79,7 @@ public class EnemyScript : MonoBehaviour
     private void LateUpdate()
     {
         oldPos = enemy.transform.position.x;
-        oldMovingDirection = movingLeft;
+        oldMovingDirection = isMovingLeft;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
